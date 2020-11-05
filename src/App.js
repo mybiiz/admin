@@ -3,7 +3,7 @@ import './App.css';
 import React, { useState } from 'react';
 import MainComponent from './components/MainComponent/MainComponent'
 
-const AppContext = React.createContext(null)
+export const AppContext = React.createContext(null)
 
 function App() {
   const [state, setState] = useState({
