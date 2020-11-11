@@ -1,81 +1,97 @@
-import { blue, purple, red, yellow } from '@ant-design/colors'
-import { Button, Card } from 'antd'
-import React, { useContext } from 'react'
+import { blue, gold, purple, red, yellow } from "@ant-design/colors";
+import { Button, Card } from "antd";
+import React, { useContext } from "react";
 
-import { AppContext } from '../../App'
-import Login from '../Login/Login'
+import { AppContext } from "../../App";
+import Login from "../Login/Login";
 
 const MainComponent = () => {
-  const ctx = useContext(AppContext)
+  const ctx = useContext(AppContext);
 
-  // console.log("Comntext:", ctx)
+  console.log("Comntext:", ctx)
 
   return (
     <>
       {/* {JSON.stringify(ctx?.state)} */}
-      {ctx?.state.loggedIn
-        ? <div
+      {ctx?.state.loggedIn ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Card
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100vh'
+              borderColor: blue[2],
             }}
           >
-            <Card 
+            <div
               style={{
-                borderColor: blue[2]
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            > 
+            >
+              <div>This is the admin page main component. Say hello!</div>
               <div
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center', 
-                  justifyContent: 'center' 
+                style={{
+                  marginTop: 5,
+                  marginBottom: 5,
                 }}
               >
-                <div>
-                  This is the admin page main component. Say hello!
-                </div>
-                <div
+                <Button
+                  onClick={(e) => {
+                    alert("Hello clicked!");
+                  }}
                   style={{
-                    marginTop: 5,
-                    marginBottom: 5
+                    backgroundColor: gold.primary,
+                    borderColor: gold[6],
+                    color: gold[9],
                   }}
                 >
-                  <Button
-                    onClick={e => {
-                      alert('Hello clicked!')
-                    }}
-                    style={{
-                      backgroundColor: yellow.primary,
-                      borderColor: yellow[6]
-                    }}
-                  >
-                    Hello!
-                  </Button>
-                  <Button
-                    onClick={e => {
-                      alert('Hi clicked!')
-                    }}
-                    type="primary"
-                    style={{
-                      backgroundColor: purple.primary,
-                      borderColor: purple[6]
-                    }}
-                  >
-                    Hi!
-                  </Button>
-                </div>
+                  Hello!
+                </Button>
+                <Button
+                  type="primary"
+                  style={{
+                    backgroundColor: purple.primary,
+                    borderColor: purple[6],
+                    color: purple[0],
+                  }}
+                >
+                  Hi!
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    localStorage.removeItem("apiKey");
+
+                    ctx?.setState({
+                      ...ctx.state,
+                      loggedIn: false,
+                      apiKey: null,
+                    });
+                  }}
+                  type="primary"
+                  style={{
+                    backgroundColor: red.primary,
+                    borderColor: red[6],
+                    color: red[0],
+                  }}
+                >
+                  Logout
+                </Button>
               </div>
-            </Card>
-
-          </div>
-        : <Login />
-      }
+            </div>
+          </Card>
+        </div>
+      ) : (
+        <Login />
+      )}
     </>
-  )
-}
+  );
+};
 
-export default MainComponent
+export default MainComponent;

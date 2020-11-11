@@ -1,5 +1,5 @@
 import { blue, purple } from "@ant-design/colors";
-import { Button, Form, Input, Space, Typography } from "antd";
+import { Button, Form, Input, Space, Spin, Typography } from "antd";
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 
@@ -9,19 +9,51 @@ const Login = () => {
   const ctx = useContext(AppContext);
 
   const [state, setState] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
-  const handleLogin = (e) => {
-    alert("test");
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-    console.log("Context:", ctx)
+    // console.log("Context:", ctx?.state);
 
-    ctx?.setState({
-      ...ctx.state,
-      loggedIn: true
-    })
+    try {
+      ctx?.setState({
+        ...ctx.state,
+        loginRequestStatus: "Loading",
+      });
+
+      const response = await fetch(`${ctx?.state.baseUrl}/login`, {
+        method: "post",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          email: state.email,
+          password: state.password,
+        }),
+      });
+
+      if (response.status !== 200) throw await response.text();
+
+      const apiKey = await response.text();
+      localStorage.setItem("apiKey", apiKey);
+
+      console.log("Response:", apiKey);
+
+      ctx?.setState({
+        ...ctx.state,
+        loggedIn: true,
+        loginRequestStatus: "Success",
+        apiKey: apiKey,
+      });
+    } catch (e) {
+      alert(e);
+
+      ctx?.setState({
+        ...ctx.state,
+        loginRequestStatus: "Error",
+      });
+    }
   };
 
   const layout = {
@@ -55,13 +87,38 @@ const Login = () => {
             <Title level={3}>MyBiiz Admin</Title>
           </div>
 
+          {ctx?.state.loginRequestStatus === "Loading" ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 5,
+                marginBottom: 5,
+              }}
+            >
+              <Spin />
+            </div>
+          ) : (
+            <></>
+          )}
+
           <Form {...layout}>
-            <Form.Item label="Username">
-              <Input placeholder="Username..." />
+            <Form.Item label="Email">
+              <Input
+                value={state.email}
+                onChange={(e) => setState({ ...state, email: e.target.value })}
+                placeholder="Email..."
+              />
             </Form.Item>
 
             <Form.Item label="Password">
-              <Input.Password placeholder="Password..." />
+              <Input.Password
+                value={state.password}
+                onChange={(e) =>
+                  setState({ ...state, password: e.target.value })
+                }
+                placeholder="Password..."
+              />
             </Form.Item>
 
             <div
