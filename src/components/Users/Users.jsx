@@ -71,13 +71,15 @@ const UsersPage = () => {
           {state.requestStatus === "Loading" ? (
             <CircularProgress disableShrink />
           ) : (
-            <TableContainer
+            <>
+              <Box my={1}>
+                Total: {state.page?.totalElements}
+              </Box>
+              <TableContainer
               style={{ height: "60vh", overflow: "auto" }}
               component={Paper}
               elevation={5}
             >
-              {/* <TableRow>{JSON.stringify(state)}</TableRow> */}
-
               <Table style={{ borderCollapse: "separate" }} size="small">
                 <TableHead>
                   <TableRow>
@@ -139,30 +141,11 @@ const UsersPage = () => {
                       </>
                     );
                   })}
-                  {/* {[...Array(100).keys()].map((test) => {
-                    return (
-                      <TableRow>
-                        <TableCell style={{ textAlign: "center" }}>
-                          TEst
-                        </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
-                          TEst
-                        </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
-                          TEst
-                        </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
-                          TEst
-                        </TableCell>
-                        <TableCell style={{ textAlign: "center" }}>
-                          TEst
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })} */}
                 </TableBody>
               </Table>
             </TableContainer>
+            </>
+            
           )}
         </Box>
       </Box>
