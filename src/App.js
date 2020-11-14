@@ -11,7 +11,8 @@ function App() {
     apiKey: localStorage.getItem("apiKey"),
     loggedIn: localStorage.getItem("apiKey") ? true : false,
     drawerOpen: false,
-    loginRequestStatus: "NotAsked", // NotAsked, Login, Success, Error
+    loginRequestStatus: "NotAsked", // NotAsked, Login, Success, Error,
+    serviceTypes: []
   });
 
   return (

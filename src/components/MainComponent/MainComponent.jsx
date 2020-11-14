@@ -15,7 +15,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MenuIcon from "@material-ui/icons/Menu";
 import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -34,6 +34,40 @@ const theme = createMuiTheme({
 
 const MainComponent = () => {
   const ctx = useContext(AppContext);
+
+  const fetchServiceTypes = async (apiKey) => {
+    try {
+      const response = await fetch(`${ctx?.state.baseUrl}/servicetypes`, {
+        headers: {
+          authorization: apiKey,
+        },
+      });
+
+      return await response.json();
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const fetchInitialData = async (apiKey) => {
+    return {
+      serviceTypes: await fetchServiceTypes(apiKey),
+    };
+  };
+
+  useEffect(() => {
+    if (ctx?.state.apiKey) {
+      console.log("Api key not null.");
+      (async () => {
+        const fetchedData = await fetchInitialData(ctx.state.apiKey);
+
+        ctx?.setState({
+          ...ctx.state,
+          ...fetchedData,
+        });
+      })();
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -143,10 +177,9 @@ const MainComponent = () => {
               <PartnersPage />
             </Route>
           </Switch>
-          
         </Router>
       ) : (
-        <Login />
+        <Login fetchInitialData={fetchInitialData} />
       )}
     </ThemeProvider>
   );

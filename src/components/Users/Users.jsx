@@ -69,11 +69,10 @@ const UsersPage = () => {
     <>
       <Box>
         <Box m={2}>
-          {state.requestStatus === "Loading" ? (
-            <CircularProgress disableShrink />
-          ) : (
             <>
-              <Box my={1}>Total: {state.page?.totalElements}</Box>
+              <Box display="flex">
+                <Box my={1}>Total: {state.page?.totalElements}</Box>
+              </Box>
               <TableContainer
                 style={{ height: "60vh", overflow: "auto" }}
                 component={Paper}
@@ -141,7 +140,6 @@ const UsersPage = () => {
                 </Table>
               </TableContainer>
             </>
-          )}
         </Box>
       </Box>
     </>

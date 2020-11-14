@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
-import { Title } from "@material-ui/icons";
+import { PinDropSharp, Title } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 
@@ -56,8 +56,11 @@ const Login = () => {
 
       console.log("Response:", apiKey);
 
+      const fetchedData = await props.fetchInitialData(apiKey);
+
       ctx?.setState({
         ...ctx.state,
+        ...fetchedData,
         loggedIn: true,
         loginRequestStatus: "Success",
         apiKey: apiKey,
