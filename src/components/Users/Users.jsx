@@ -123,7 +123,7 @@ const UsersPage = () => {
                             </>,
                             <>{user?.partners[0]?.business?.name}</>,
                             <>
-                              {user?.partners[0]?.bank
+                              {user?.partners[0]?.bank?.id !== 0
                                 ? `${user?.partners[0]?.bank?.code ?? ""} - ${
                                     user?.partners[0]?.bank?.name ?? ""
                                   }`
