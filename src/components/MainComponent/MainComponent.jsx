@@ -24,6 +24,7 @@ import Login from "../Login/Login";
 import { grey, purple } from "@material-ui/core/colors";
 import { SettingsApplications } from "@material-ui/icons";
 import UsersPage from "../Users/Users";
+import PartnersPage from "../Partners/Partners";
 
 const theme = createMuiTheme({
   palette: {
@@ -70,7 +71,7 @@ const MainComponent = () => {
           >
             <Box>
               <List>
-                <Link
+                {/* <Link
                   onClick={() =>
                     ctx?.setState({ ...ctx.state, drawerOpen: false })
                   }
@@ -79,6 +80,17 @@ const MainComponent = () => {
                 >
                   <ListItem button>
                     <ListItemText primary="Users" />
+                  </ListItem>
+                </Link> */}
+                <Link
+                  onClick={() =>
+                    ctx?.setState({ ...ctx.state, drawerOpen: false })
+                  }
+                  to="/"
+                  style={{ textDecoration: "none", color: grey[900] }}
+                >
+                  <ListItem button>
+                    <ListItemText primary="Partners" />
                   </ListItem>
                 </Link>
                 <Link
@@ -124,8 +136,11 @@ const MainComponent = () => {
           </SwipeableDrawer>
 
           <Switch>
-            <Route exact path="/">
+            {/* <Route exact path="/">
               <UsersPage />
+            </Route> */}
+            <Route exact path="/">
+              <PartnersPage />
             </Route>
           </Switch>
           
