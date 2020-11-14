@@ -10,6 +10,7 @@ function App() {
     baseUrl: process.env.REACT_APP_BASE_URL,
     apiKey: localStorage.getItem("apiKey"),
     loggedIn: localStorage.getItem("apiKey") ? true : false,
+    drawerOpen: false,
     loginRequestStatus: "NotAsked", // NotAsked, Login, Success, Error
   });
 

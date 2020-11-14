@@ -1,9 +1,25 @@
-import { blue, purple } from "@ant-design/colors";
-import { Button, Form, Input, Space, Spin, Typography } from "antd";
+// import { blue, purple } from "@ant-design/colors";
+// import { Button, Form, Input, Space, Spin, Typography } from "antd";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  createMuiTheme,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from "@material-ui/core";
+import { purple } from "@material-ui/core/colors";
+import { Title } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 
-const { Title } = Typography;
+// const { Title } = Typography;
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+  },
+});
 
 const Login = () => {
   const ctx = useContext(AppContext);
@@ -62,87 +78,75 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div
+    <ThemeProvider theme={theme}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
         style={{
-          backgroundColor: purple[3],
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           height: "100vh",
+          backgroundColor: purple[100],
         }}
       >
-        <div
-          style={{
-            backgroundColor: purple[0],
-            padding: "1em",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
+        <form>
+          <Box
+            style={{ backgroundColor: "white" }}
+            borderRadius={5}
+            p={3}
+            boxShadow={3}
+            m={1}
+            flexDirection="column"
           >
-            <Title level={3}>MyBiiz Admin</Title>
-          </div>
+            <Box display="flex" justifyContent="center">
+              <Typography variant="h5" style={{ color: purple[600] }}>
+                MyBiiz Admin
+              </Typography>
+            </Box>
 
-          {ctx?.state.loginRequestStatus === "Loading" ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: 5,
-                marginBottom: 5,
-              }}
-            >
-              <Spin />
-            </div>
-          ) : (
-            <></>
-          )}
+            {ctx?.state.loginRequestStatus === "Loading" ? (
+              <Box display="flex" justifyContent="center" my={1}>
+                <CircularProgress disableShrink />
+              </Box>
+            ) : (
+              <></>
+            )}
 
-          <Form {...layout}>
-            <Form.Item label="Email">
-              <Input
+            <Box my={2}>
+              <TextField
+                label="Email"
+                name="email"
                 value={state.email}
                 onChange={(e) => setState({ ...state, email: e.target.value })}
-                placeholder="Email..."
+                // placeholder="Email..."
               />
-            </Form.Item>
+            </Box>
 
-            <Form.Item label="Password">
-              <Input.Password
+            <Box my={2}>
+              <TextField
+                label="Password"
+                type="password"
                 value={state.password}
                 onChange={(e) =>
                   setState({ ...state, password: e.target.value })
                 }
-                placeholder="Password..."
+                // placeholder="Password..."
               />
-            </Form.Item>
+            </Box>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <Box display="flex" justifyContent="center">
               <Button
-                htmlType="submit"
-                style={{
-                  backgroundColor: blue.primary,
-                  color: blue[0],
-                  borderColor: blue.primary,
-                }}
+                variant="contained"
+                color="primary"
+                type="submit"
                 onClick={handleLogin}
               >
                 Login
               </Button>
-            </div>
-          </Form>
-        </div>
-      </div>
-    </>
+            </Box>
+          </Box>
+        </form>
+      </Box>
+    </ThemeProvider>
   );
 };
 
