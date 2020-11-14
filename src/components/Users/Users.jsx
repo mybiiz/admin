@@ -46,7 +46,7 @@ const UsersPage = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        `${ctx?.state.baseUrl}/userspaged?page=0&perPage=10`,
+        `${ctx?.state.baseUrl}/userspaged?page=0&perPage=1000`,
         {
           headers: {
             authorization: ctx?.state.apiKey ?? "",
