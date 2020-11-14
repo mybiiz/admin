@@ -21,7 +21,7 @@ const theme = createMuiTheme({
   },
 });
 
-const Login = () => {
+const Login = (props) => {
   const ctx = useContext(AppContext);
 
   const [state, setState] = useState({
