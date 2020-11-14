@@ -71,17 +71,6 @@ const MainComponent = () => {
           >
             <Box>
               <List>
-                {/* <Link
-                  onClick={() =>
-                    ctx?.setState({ ...ctx.state, drawerOpen: false })
-                  }
-                  to="/"
-                  style={{ textDecoration: "none", color: grey[900] }}
-                >
-                  <ListItem button>
-                    <ListItemText primary="Users" />
-                  </ListItem>
-                </Link> */}
                 <Link
                   onClick={() =>
                     ctx?.setState({ ...ctx.state, drawerOpen: false })
@@ -91,6 +80,17 @@ const MainComponent = () => {
                 >
                   <ListItem button>
                     <ListItemText primary="Partners" />
+                  </ListItem>
+                </Link>
+                <Link
+                  onClick={() =>
+                    ctx?.setState({ ...ctx.state, drawerOpen: false })
+                  }
+                  to="/users"
+                  style={{ textDecoration: "none", color: grey[900] }}
+                >
+                  <ListItem button>
+                    <ListItemText primary="Users" />
                   </ListItem>
                 </Link>
                 <Link
@@ -136,9 +136,9 @@ const MainComponent = () => {
           </SwipeableDrawer>
 
           <Switch>
-            {/* <Route exact path="/">
+            <Route exact path="/users">
               <UsersPage />
-            </Route> */}
+            </Route>
             <Route exact path="/">
               <PartnersPage />
             </Route>

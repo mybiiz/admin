@@ -8,8 +8,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
-import { grey, purple } from "@material-ui/core/colors";
+import { green, grey, purple, red } from "@material-ui/core/colors";
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
 
@@ -72,80 +73,74 @@ const UsersPage = () => {
             <CircularProgress disableShrink />
           ) : (
             <>
-              <Box my={1}>
-                Total: {state.page?.totalElements}
-              </Box>
+              <Box my={1}>Total: {state.page?.totalElements}</Box>
               <TableContainer
-              style={{ height: "60vh", overflow: "auto" }}
-              component={Paper}
-              elevation={5}
-            >
-              <Table style={{ borderCollapse: "separate" }} size="small">
-                <TableHead>
-                  <TableRow>
-                    {[
-                      "Email",
-                      "Name",
-                      "Partner Name",
-                      "Bank",
-                      "Business Type",
-                    ].map((cellName) => {
+                style={{ height: "60vh", overflow: "auto" }}
+                component={Paper}
+                elevation={5}
+              >
+                <Table style={{ borderCollapse: "separate" }} size="small">
+                  <TableHead>
+                    <TableRow>
+                      {["Email", "Registration Complete?"].map((cellName) => {
+                        return (
+                          <>
+                            <TableCell
+                              style={{
+                                position: "sticky",
+                                color: "white",
+                                top: 0,
+                                backgroundColor: purple[300],
+                                fontWeight: "bold",
+                                textAlign: "center",
+                                border: `1px solid ${grey[400]}`,
+                              }}
+                            >
+                              {cellName}
+                            </TableCell>
+                          </>
+                        );
+                      })}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {state.page.content?.map((user) => {
                       return (
                         <>
-                          <TableCell
-                            style={{
-                              position: "sticky",
-                              color: "white",
-                              top: 0,
-                              backgroundColor: purple[300],
-                              fontWeight: "bold",
-                              textAlign: "center",
-                              border: `1px solid ${grey[400]}`,
-                            }}
-                          >
-                            {cellName}
-                          </TableCell>
+                          <TableRow>
+                            {[
+                              <>{user?.email}</>,
+                              <>
+                                {user?.registrationCompleted ? (
+                                  <Box fontWeight="bold" color={green[600]}>
+                                    Yes
+                                  </Box>
+                                ) : (
+                                  <Box fontWeight="bold" color={red[600]}>
+                                    No
+                                  </Box>
+                                )}
+                              </>,
+                            ].map((cell) => {
+                              return (
+                                <TableCell
+                                  style={{
+                                    border: `1px solid ${grey[300]}`,
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {cell}
+                                </TableCell>
+                              );
+                            })}
+                          </TableRow>
                         </>
                       );
                     })}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {state.page.content?.map((user) => {
-                    return (
-                      <>
-                        <TableRow>
-                          {[
-                            <>{user?.email}</>,
-                            <>
-                              {user?.partners[0]?.firstName ?? ""}{" "}
-                              {user?.partners[0]?.lastName ?? ""}
-                            </>,
-                            <>{user?.partners[0]?.business?.name}</>,
-                            <>
-                              {user?.partners[0]?.bank && user?.partners[0]?.bank?.id !== 0
-                                ? `${user?.partners[0]?.bank?.code ?? ""} - ${
-                                    user?.partners[0]?.bank?.name ?? ""
-                                  }`
-                                : ""}
-                            </>,
-                            <>{user?.partners[0]?.business?.serviceType?.name}</>
-                          ].map((cell) => {
-                            return (
-                              <TableCell style={{ border: `1px solid ${grey[300]}`, textAlign: "center" }}>
-                                {cell}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      </>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </>
-            
           )}
         </Box>
       </Box>
