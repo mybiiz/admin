@@ -169,6 +169,7 @@ const MainComponent = () => {
             </Box>
           </SwipeableDrawer>
 
+          <Box style={ { backgroundColor: purple[50], minHeight: "100vh" }}>
           <Switch>
             <Route exact path="/users">
               <UsersPage />
@@ -177,6 +178,8 @@ const MainComponent = () => {
               <PartnersPage />
             </Route>
           </Switch>
+          </Box>
+          
         </Router>
       ) : (
         <Login fetchInitialData={fetchInitialData} />

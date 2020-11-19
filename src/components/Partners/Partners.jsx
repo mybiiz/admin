@@ -1,6 +1,7 @@
 import {
   Box,
   CircularProgress,
+  Container,
   Paper,
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import { grey, purple } from "@material-ui/core/colors";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
+import GenericCrudTable from "../GenericCrudTable/GenericCrudTable";
 
 const PartnersPage = () => {
   const ctx = useContext(AppContext);
@@ -71,127 +73,149 @@ const PartnersPage = () => {
 
   return (
     <>
-      <Box>
-        <Box m={2}>
-          <>
-            {/* {JSON.stringify(ctx?.state.serviceTypes)} */}
-            <Box my={1} display="flex" alignItems="center">
-              <Box my={1} mx={1}>
-                Total: {state.page?.totalElements}
-              </Box>
-              <Autocomplete
-                style={{ width: 300 }}
-                size="small"
-                options={
-                  ctx?.state.serviceTypes
-                    ? [{ name: "All", id: 0 }, ...ctx.state.serviceTypes]
-                    : []
-                }
-                getOptionLabel={(serviceType) => serviceType?.name ?? ""}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Service Type"
-                    variant="outlined"
-                  />
-                )}
-                onChange={(e, value) => {
-                  console.log("ONchange:", e.target.value, value);
-                  setState({
-                    ...state,
-                    requestStatus: "NotAsked",
-                    selectedServiceTypeId: value?.id ?? 0,
-                  });
-                }}
-              />
-              {state.requestStatus === "Loading" ? (
-                <CircularProgress disableShrink />
-              ) : (
-                <></>
-              )}
+      <Container>
+        <Box pt={2}>
+          <Box flexWrap display="flex" alignItems="center">
+            <Box>
+              Total: {state.page?.totalElements}
             </Box>
-
-            <TableContainer
-              style={{ height: "60vh", overflow: "auto" }}
-              component={Paper}
-              elevation={5}
-            >
-              <Table style={{ borderCollapse: "separate" }} size="small">
-                <TableHead>
-                  <TableRow>
-                    {[
-                      "Email",
-                      "Name",
-                      "Partner Name",
-                      "Phone",
-                      "Bank",
-                      "Bank Account #",
-                      "Service Type",
-                    ].map((cellName) => {
-                      return (
-                        <>
-                          <TableCell
-                            style={{
-                              position: "sticky",
-                              color: "white",
-                              top: 0,
-                              backgroundColor: purple[300],
-                              fontWeight: "bold",
-                              textAlign: "center",
-                              border: `1px solid ${grey[400]}`,
-                            }}
-                          >
-                            {cellName}
-                          </TableCell>
-                        </>
-                      );
-                    })}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {state.page.content?.map((partner) => {
+            <Autocomplete
+              style={{ flexGrow: 1, backgroundColor: "white" }}
+              size="small"
+              options={
+                ctx?.state.serviceTypes
+                  ? [{ name: "All", id: 0 }, ...ctx.state.serviceTypes]
+                  : []
+              }
+              getOptionLabel={(serviceType) => serviceType?.name ?? ""}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Service Type"
+                  variant="outlined"
+                />
+              )}
+              onChange={(e, value) => {
+                console.log("ONchange:", e.target.value, value);
+                setState({
+                  ...state,
+                  requestStatus: "NotAsked",
+                  selectedServiceTypeId: value?.id ?? 0,
+                });
+              }}
+            />
+            {/* <Autocomplete
+              style={{ flexGrow: 1, backgroundColor: "white" }}
+              options={[]}
+              size="small"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Service Type"
+                  variant="outlined"
+                />
+              )}
+            /> */}
+            {state.requestStatus === "Loading" ? (
+              <CircularProgress disableShrink />
+            ) : (
+              <></>
+            )}
+          </Box>
+        </Box>
+        <>
+          <GenericCrudTable
+            head={[
+              "Email",
+              "Name",
+              "Partner Name",
+              "Phone",
+              "Bank",
+              "Bank Account #",
+              "Service Type",
+            ]}
+          />
+        </>
+        <>
+          <TableContainer
+            style={{ height: "60vh", overflow: "auto" }}
+            component={Paper}
+            elevation={5}
+          >
+            <Table style={{ borderCollapse: "separate" }} size="small">
+              <TableHead>
+                <TableRow>
+                  {[
+                    "Email",
+                    "Name",
+                    "Partner Name",
+                    "Phone",
+                    "Bank",
+                    "Bank Account #",
+                    "Service Type",
+                  ].map((cellName) => {
                     return (
                       <>
-                        <TableRow>
-                          {[
-                            <>{partner?.user?.email ?? ""}</>,
-                            <>
-                              {partner?.firstName ?? ""}{" "}
-                              {partner?.lastName ?? ""}
-                            </>,
-                            <>{partner?.business?.name ?? ""}</>,
-                            <>{partner?.phone ?? ""}</>,
-                            <>
-                              {partner?.bank && partner?.bank?.id !== 0
-                                ? `${partner?.bank?.code ?? ""} - ${
-                                    partner?.bank?.name ?? ""
-                                  }`
-                                : ""}
-                            </>,
-                            <>{partner?.bankAccountId}</>,
-                            <>{partner?.business?.serviceType?.name}</>,
-                          ].map((cell) => {
-                            return (
-                              <TableCell
-                                style={{
-                                  border: `1px solid ${grey[300]}`,
-                                  textAlign: "center",
-                                }}
-                              >
-                                {cell}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
+                        <TableCell
+                          style={{
+                            position: "sticky",
+                            color: "white",
+                            top: 0,
+                            backgroundColor: purple[300],
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            border: `1px solid ${grey[400]}`,
+                          }}
+                        >
+                          {cellName}
+                        </TableCell>
                       </>
                     );
                   })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </>
-        </Box>
-      </Box>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {state.page.content?.map((partner) => {
+                  return (
+                    <>
+                      <TableRow>
+                        {[
+                          <>{partner?.user?.email ?? ""}</>,
+                          <>
+                            {partner?.firstName ?? ""} {partner?.lastName ?? ""}
+                          </>,
+                          <>{partner?.business?.name ?? ""}</>,
+                          <>{partner?.phone ?? ""}</>,
+                          <>
+                            {partner?.bank && partner?.bank?.id !== 0
+                              ? `${partner?.bank?.code ?? ""} - ${
+                                  partner?.bank?.name ?? ""
+                                }`
+                              : ""}
+                          </>,
+                          <>{partner?.bankAccountId}</>,
+                          <>{partner?.business?.serviceType?.name}</>,
+                        ].map((cell) => {
+                          return (
+                            <TableCell
+                              style={{
+                                border: `1px solid ${grey[300]}`,
+                                textAlign: "center",
+                              }}
+                            >
+                              {cell}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    </>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
+      </Container>
     </>
   );
 };
