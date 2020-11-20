@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -10,9 +12,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import { grey, purple } from "@material-ui/core/colors";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../App";
 
 const GenericCrudTable = (props) => {
+  const ctx = useContext(AppContext);
+
   const url = props.url ?? "";
   const tableHeads = props.head ?? [];
   const tableBodyMapper =
@@ -24,27 +29,100 @@ const GenericCrudTable = (props) => {
 
   const [state, setState] = useState({
     firstRenderComplete: false,
-    page: {
-      page: 0,
-      perPage: 10,
-      content: [],
-    },
+    requestStatus: "NotAsked",
+    page: 0,
+    perPage: 10,
+    pageData: null,
   });
 
   // First time render
   useEffect(() => {
-    setState({ ...state, firstRenderComplete: true });
+    fetchData(true);
   }, []);
+
+  // Refetch on URL change, don't do anything on first render
+  useEffect(() => {
+    if (state.firstRenderComplete) {
+      fetchData(true);
+    }
+  }, [url]);
+
+  // Refetch on page change, no reset
+  useEffect(() => {
+    if (state.firstRenderComplete) {
+      fetchData(false);
+    }
+  }, [state.page]);
+
+  const fetchData = async (reset) => {
+    setState({ ...state, requestStatus: "Loading" });
+
+    const pageData = await fetchItems();
+
+    console.log("Reset:", reset);
+    console.log("Page data:", pageData, pageData?.content);
+
+    if (pageData) {
+      setState({
+        ...state,
+        pageData: {
+          ...pageData,
+          content: reset
+            ? pageData?.content
+            : [...(state.pageData?.content ?? []), ...pageData?.content],
+        },
+        page: reset ? 0 : state.page,
+        firstRenderComplete: true,
+        requestStatus: "Success ",
+      });
+    }
+  };
+
+  const fetchItems = async () => {
+    try {
+      const response = await fetch(
+        `${url}&page=${state.page}&perPage=${state.perPage}`,
+        {
+          headers: {
+            authorization: ctx?.state.apiKey ?? "",
+          },
+        }
+      );
+
+      if (response.status !== 200) throw await response.text();
+
+      return await response.json();
+    } catch (e) {
+      return null;
+    }
+  };
 
   return (
     <>
+      {/* Page data content: {JSON.stringify(state.pageData?.content)} */}
+      <Box pt={2} display="flex" alignItems="center">
+        <Button size="small" variant="contained" color="primary">
+          Add
+        </Button>
+        <Box ml={2}>
+          Showing {state.pageData?.content?.length ?? 0} of{" "}
+          {state.pageData?.totalElements ?? 0} items
+        </Box>
+        <Box ml={2}>
+          {state.requestStatus === "Loading" ? (
+            <CircularProgress thickness={6} size={24} disableShrink />
+          ) : (
+            <></>
+          )}
+        </Box>
+      </Box>
       <Box borderRadius={15} my={2}>
         <TableContainer
-          style={{ resize: "vertical" }}
+          style={{ height: "60vh", resize: "vertical" }}
           component={Paper}
           elevation={5}
         >
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 {tableHeads.map((head) => (
@@ -57,6 +135,8 @@ const GenericCrudTable = (props) => {
                       textAlign: "center",
                       whiteSpace: "nowrap",
                       border: `3px solid ${grey[400]}`,
+                      position: "sticky",
+                      top: 0,
                     }}
                   >
                     {head}{" "}
@@ -65,16 +145,42 @@ const GenericCrudTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableContents.map((content) => {
+              {state.pageData?.content?.map((item) => {
+                const mappedItem = tableBodyMapper(item);
+
                 return (
-                  <>
-                    <TableRow>{tableBodyMapper(content)}</TableRow>
-                  </>
+                  <TableRow>
+                    {mappedItem.content.map((row) => {
+                      return (
+                        <TableCell style={{ textAlign: "center" }}>
+                          {row}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </TableContainer>
+      </Box>
+      <Box display="flex" justifyContent="center">
+        {state.page === state.pageData?.last ? (
+          <></>
+        ) : (
+          <Button
+            onClick={() => {
+              setState({
+                ...state,
+                page: state.page + 1,
+              });
+            }}
+            variant="contained"
+            color="primary"
+          >
+            Load more...
+          </Button>
+        )}
       </Box>
     </>
   );
