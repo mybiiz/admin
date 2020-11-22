@@ -59,6 +59,7 @@ const PartnersPage = () => {
         <>
           <GenericCrudTable
             url={`${ctx?.state.baseUrl}/partnerspaged?name=&serviceTypeId=${state.selectedServiceTypeId}`}
+            spreadsheetUrl="partnersexcel"
             head={[
               "Email",
               "Name",

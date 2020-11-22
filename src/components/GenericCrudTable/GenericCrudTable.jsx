@@ -20,6 +20,7 @@ const GenericCrudTable = (props) => {
   const ctx = useContext(AppContext);
 
   const url = props.url ?? "";
+  const spreadsheetUrl = props.spreadsheetUrl ?? "";
   const tableHeads = props.head ?? [];
   const tableBodyMapper =
     props.mapper ??
@@ -118,7 +119,7 @@ const GenericCrudTable = (props) => {
         </Box>
 
         <Box>
-          <a target="_blank" href={`${ctx?.state.baseUrl}/partnersexcel`}>
+          <a target="_blank" href={`${ctx?.state.baseUrl}/${spreadsheetUrl}`}>
             <Button color="primary" variant="contained">
               <DownloadIcon />
               <Box ml={1}>Download XLSX</Box>
