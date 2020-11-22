@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { grey, purple } from "@material-ui/core/colors";
 import React, { useContext, useEffect, useState } from "react";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { AppContext } from "../../App";
 
 const GenericCrudTable = (props) => {
@@ -100,21 +101,36 @@ const GenericCrudTable = (props) => {
   return (
     <>
       {/* Page data content: {JSON.stringify(state.pageData?.content)} */}
-      <Box pt={2} display="flex" alignItems="center">
-        <Button size="small" variant="contained" color="primary">
-          Add
-        </Button>
-        <Box ml={2}>
-          Showing {state.pageData?.content?.length ?? 0} of{" "}
-          {state.pageData?.totalElements ?? 0} items
+      <Box
+        pt={2}
+        justifyContent="space-between"
+        display="flex"
+        alignItems="center"
+      >
+        <Box display="flex" alignItems="center">
+          <Button size="small" variant="contained" color="primary">
+            Add
+          </Button>
+          <Box ml={2}>
+            Showing {state.pageData?.content?.length ?? 0} of{" "}
+            {state.pageData?.totalElements ?? 0} items
+          </Box>
         </Box>
-        <Box ml={2}>
-          {state.requestStatus === "Loading" ? (
-            <CircularProgress thickness={6} size={24} disableShrink />
-          ) : (
-            <></>
-          )}
+
+        <Box>
+          <a target="_blank" href={`${ctx?.state.baseUrl}/partnersexcel`}>
+            <Button color="primary" variant="contained">
+              <DownloadIcon />
+              <Box ml={1}>Download XLSX</Box>
+            </Button>
+          </a>
         </Box>
+
+        {state.requestStatus === "Loading" ? (
+          <CircularProgress thickness={6} size={24} disableShrink />
+        ) : (
+          <></>
+        )}
       </Box>
       <Box borderRadius={15} my={2}>
         <TableContainer
