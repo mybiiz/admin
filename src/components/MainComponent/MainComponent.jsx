@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   createMuiTheme,
-  Drawer,
   IconButton,
   List,
   ListItem,
@@ -15,16 +14,15 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import React, { useContext, useEffect, useState } from "react";
-import MenuIcon from "@material-ui/icons/Menu";
-import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-import { AppContext } from "../../App";
-import Login from "../Login/Login";
 import { grey, purple } from "@material-ui/core/colors";
-import { SettingsApplications } from "@material-ui/icons";
-import UsersPage from "../Users/Users";
+import MenuIcon from "@material-ui/icons/Menu";
+import React, { useContext, useEffect } from "react";
+import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { AppContext } from "../../App";
+import CitiesPage from "../Cities/CitiesPage";
+import Login from "../Login/Login";
 import PartnersPage from "../Partners/Partners";
+import UsersPage from "../Users/Users";
 
 const theme = createMuiTheme({
   palette: {
@@ -131,17 +129,6 @@ const MainComponent = () => {
                   onClick={() =>
                     ctx?.setState({ ...ctx.state, drawerOpen: false })
                   }
-                  to="/comingsoonemails"
-                  style={{ textDecoration: "none", color: grey[900] }}
-                >
-                  <ListItem button>
-                    <ListItemText primary="Coming Soon Emails" />
-                  </ListItem>
-                </Link>
-                <Link
-                  onClick={() =>
-                    ctx?.setState({ ...ctx.state, drawerOpen: false })
-                  }
                   to="/cities"
                   style={{ textDecoration: "none", color: grey[900] }}
                 >
@@ -149,6 +136,18 @@ const MainComponent = () => {
                     <ListItemText primary="Cities" />
                   </ListItem>
                 </Link>
+                <Link
+                  onClick={() =>
+                    ctx?.setState({ ...ctx.state, drawerOpen: false })
+                  }
+                  to="/comingsoonemails"
+                  style={{ textDecoration: "none", color: grey[900] }}
+                >
+                  <ListItem button>
+                    <ListItemText primary="Coming Soon Emails" />
+                  </ListItem>
+                </Link>
+
                 <ListItem
                   onClick={() => {
                     localStorage.removeItem("apiKey");
@@ -169,17 +168,19 @@ const MainComponent = () => {
             </Box>
           </SwipeableDrawer>
 
-          <Box style={ { backgroundColor: purple[50], minHeight: "100vh" }}>
-          <Switch>
-            <Route exact path="/users">
-              <UsersPage />
-            </Route>
-            <Route exact path="/">
-              <PartnersPage />
-            </Route>
-          </Switch>
+          <Box style={{ backgroundColor: purple[50], minHeight: "100vh" }}>
+            <Switch>
+              <Route exact path="/users">
+                <UsersPage />
+              </Route>
+              <Route exact path="/cities">
+                <CitiesPage />
+              </Route>
+              <Route exact path="/">
+                <PartnersPage />
+              </Route>
+            </Switch>
           </Box>
-          
         </Router>
       ) : (
         <Login fetchInitialData={fetchInitialData} />

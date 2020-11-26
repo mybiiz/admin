@@ -1,19 +1,8 @@
 import {
-  Box,
-  CircularProgress,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
+  Container
 } from "@material-ui/core";
-import { green, grey, purple, red } from "@material-ui/core/colors";
-import { Autocomplete } from "@material-ui/lab";
-import React, { useContext, useEffect, useState } from "react";
+import { green, red } from "@material-ui/core/colors";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 import GenericCrudTable from "../GenericCrudTable/GenericCrudTable";
 
@@ -57,6 +46,7 @@ const UsersPage = () => {
         <>
           <GenericCrudTable
             url={`${ctx?.state.baseUrl}/userspaged?name=`}
+            path="/users"
             head={["Email", "Registration Completed?"]}
             mapper={(user) => {
               return {

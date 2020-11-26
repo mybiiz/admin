@@ -1,5 +1,3 @@
-// import { blue, purple } from "@ant-design/colors";
-// import { Button, Form, Input, Space, Spin, Typography } from "antd";
 import {
   Box,
   Button,
@@ -7,10 +5,9 @@ import {
   createMuiTheme,
   TextField,
   ThemeProvider,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
-import { PinDropSharp, Title } from "@material-ui/icons";
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 

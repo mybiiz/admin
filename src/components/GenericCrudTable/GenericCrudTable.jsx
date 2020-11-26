@@ -9,17 +9,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@material-ui/core";
 import { grey, purple } from "@material-ui/core/colors";
-import React, { useContext, useEffect, useState } from "react";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AppContext } from "../../App";
 
 const GenericCrudTable = (props) => {
   const ctx = useContext(AppContext);
 
   const url = props.url ?? "";
+  const path = props.path ?? "";
   const spreadsheetUrl = props.spreadsheetUrl ?? "";
   const tableHeads = props.head ?? [];
   const tableBodyMapper =
@@ -109,9 +110,12 @@ const GenericCrudTable = (props) => {
         alignItems="center"
       >
         <Box display="flex" alignItems="center">
-          <Button size="small" variant="contained" color="primary">
-            Add
-          </Button>
+          <Link to={`/${path}/new`}>
+            <Button size="small" variant="contained" color="primary">
+              Add
+            </Button>
+          </Link>
+
           <Box ml={2}>
             Showing {state.pageData?.content?.length ?? 0} of{" "}
             {state.pageData?.totalElements ?? 0} items
@@ -167,10 +171,19 @@ const GenericCrudTable = (props) => {
 
                 return (
                   <TableRow>
-                    {mappedItem.content.map((row) => {
+                    {mappedItem.content.map((row, i) => {
                       return (
                         <TableCell style={{ textAlign: "center" }}>
-                          {row}
+                          {i === 0 ? (
+                            <Link
+                              style={{ color: purple[500] }}
+                              to={`/${path}/${item.id}`}
+                            >
+                              {row ?? "(No name)"}
+                            </Link>
+                          ) : (
+                            row
+                          )}
                         </TableCell>
                       );
                     })}

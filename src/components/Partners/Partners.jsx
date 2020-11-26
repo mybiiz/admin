@@ -1,19 +1,6 @@
-import {
-  Box,
-  CircularProgress,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@material-ui/core";
-import { grey, purple } from "@material-ui/core/colors";
+import { Box, Container, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 import GenericCrudTable from "../GenericCrudTable/GenericCrudTable";
 
@@ -59,6 +46,7 @@ const PartnersPage = () => {
         <>
           <GenericCrudTable
             url={`${ctx?.state.baseUrl}/partnerspaged?name=&serviceTypeId=${state.selectedServiceTypeId}`}
+            path="partners"
             spreadsheetUrl="partnersexcel"
             head={[
               "Email",
